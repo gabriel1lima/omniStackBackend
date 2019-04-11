@@ -6,7 +6,7 @@ const File = new mongoose.Schema(
       type: String,
       required: true
     },
-    title: {
+    path: {
       type: String,
       required: true
     }
