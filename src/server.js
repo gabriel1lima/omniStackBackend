@@ -1,7 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const urlConnectMongo = require("./config/urlConnectMongo");
+try { var urlConnectMongo = require("./config/urlConnectMongo") } catch (error) {}
+
 const cors = require("cors");
 
 const app = express();
@@ -16,7 +17,7 @@ io.on('connection', socket => {
   })
 })
 
-mongoose.connect(urlConnectMongo, {
+mongoose.connect(urlConnectMongo || process.env.URL_MONGO, {
   useNewUrlParser: true
 });
 
@@ -32,4 +33,6 @@ app.use("/files", express.static(path.resolve(__dirname, "..", "tmp")));
 
 app.use(require("./routes"));
 
-server.listen(3333);
+server.listen(process.env.PORT || 3333, function(){
+  console.log("Express server listening on port %d", this.address().port);
+});
